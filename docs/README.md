@@ -53,8 +53,8 @@ Core libraries and projects used (with rationale and links):
 - Docker & Docker Compose — containerization and local orchestration (https://www.docker.com/)
 
 Notes:
-- Where possible we use stable OSS libraries with permissive licenses. See `LICENSE` at repository root for the project license.
 
+- Where possible we use stable OSS libraries with permissive licenses. See `LICENSE` at repository root for the project license.
 
 ## Problem Statement & Solution Approach
 
@@ -558,6 +558,17 @@ function ModelPerformance() {
 
 ### Docker Configuration
 
+### Environment Variables
+
+Copy `.env.example` to `.env` and update values for production. Key variables:
+
+- `SENTINEL_ADMIN_USER` / `SENTINEL_ADMIN_PASS` — admin credentials for management endpoints
+- `SENTINEL_LLM_ENABLED` — enable/disable LLM fallback (true/false)
+- `SENTINEL_LLM_MODEL` — preferred LLM model id (e.g., `mistral`)
+- `MODEL_PATH` — explicit path to the Sentry model artifact if not in `src/data/archive`
+- `NEXT_PUBLIC_API_URL` — public URL of the backend used by the frontend
+
+For Vercel, set `NEXT_PUBLIC_API_URL` in the project Environment Variables settings and add `VERCEL_TOKEN`, `VERCEL_ORG_ID`, and `VERCEL_PROJECT_ID` as repository secrets for GitHub Actions deployment.
 **Multi-stage Backend Dockerfile:**
 
 ```dockerfile
@@ -714,7 +725,7 @@ Hybrid System:
 
 Follow these steps to run Sentinel-QoS locally. Adjust paths if you moved files into `src/`.
 
-1) Backend (venv)
+1. Backend (venv)
 
 ```bash
 python -m venv .venv
@@ -723,7 +734,7 @@ pip install -r src/backend/requirements.txt
 uvicorn backend.orchestrator:app --reload --host 0.0.0.0 --port 8000
 ```
 
-2) Frontend (dev)
+2. Frontend (dev)
 
 ```bash
 cd src/frontend
@@ -732,7 +743,7 @@ pnpm install
 pnpm dev
 ```
 
-3) Docker (quick start)
+3. Docker (quick start)
 
 ```bash
 # from repo root
@@ -740,17 +751,20 @@ docker-compose up --build
 ```
 
 Notes:
+
 - If model artifacts are missing, ensure `src/data/archive/sentry_model.pkl` and `label_encoder.pkl` exist.
 - Set `NEXT_PUBLIC_API_URL` to the backend host when running frontend in production.
 
 ### User Guide (Quick Actions)
 
-1) Web UI
+1. Web UI
+
 - Open `http://localhost:3000` to access the dashboard.
 - Dashboard shows live throughput, model health, and recent classifications.
 - Use the `Classify` view to submit a single flow and view the prediction + explanation.
 
-2) API (cURL examples)
+2. API (cURL examples)
+
 - Single flow classification:
 
 ```bash
@@ -767,7 +781,7 @@ curl -X POST http://localhost:8000/classify/batch \
   -d '{"flows": [{/* flow1 */}, {/* flow2 */}]}'
 ```
 
-3) WebSocket (quick example)
+3. WebSocket (quick example)
 
 ```python
 import asyncio

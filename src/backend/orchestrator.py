@@ -864,3 +864,33 @@ async def run_simulation(params: SimulationParams):
             counts[lbl] = counts.get(lbl, 0) + 1
 
     return {"simulation_results": counts, "num_samples": num_samples}
+
+
+
+@app.get("/status")
+async def status():
+    """Lightweight status endpoint used by healthcheck scripts.
+
+    Returns: basic service status including model availability and simple metrics.
+    """
+    model_present = False
+    try:
+        model_present = any(os.path.exists(p) for p in ["data/archive/sentry_model.pkl", "sentry_model.pkl", "sentry_model.joblib"])
+    except Exception:
+        model_present = False
+
+    return {
+        "service": "sentinel-qos-backend",
+        "ok": True,
+        "model_present": model_present,
+        "uptime": int(time.time()),
+        "admin_enabled": state.get("admin", {}).get("simulate_enabled", False),
+    }
+
+
+@app.get("/health")
+async def health_check():
+    """Compatibility health endpoint used in docs and external scripts.
+    Returns 200 when service is up and indicates if model artifacts are present.
+    """
+    return await status()
