@@ -9,6 +9,8 @@
   "routes": [
     { "src": "/api/(.*)", "dest": "/api/$1" }
   ],
+  "installCommand": "pnpm --prefix src/frontend install",
+  "buildCommand": "pnpm --prefix src/frontend build",
   "env": {
     "NEXT_PUBLIC_API_URL": "https://your-backend.example.com"
   }
