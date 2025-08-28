@@ -3,8 +3,7 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 
 # Install deps
-COPY frontend/package.json frontend/pnpm-lock.yaml frontend/pnpm-lock.yaml ./
-COPY frontend/ ./
+COPY package.json pnpm-lock.yaml ./
 
 RUN corepack enable && corepack prepare pnpm@latest --activate
 RUN pnpm install --frozen-lockfile
