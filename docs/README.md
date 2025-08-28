@@ -148,7 +148,7 @@ Modern network infrastructures face critical challenges in managing diverse traf
 
 ### Training Data Architecture
 
-Our training dataset (`training_data.csv`) contains network flow features:
+Our training dataset (available locally as `training_data.csv` or on Hugging Face at `Pulast/sentry_training_data`) contains network flow features:
 
 ```python
 Features:
@@ -170,7 +170,10 @@ Labels:
 ```python
 def train_sentry_model():
     # 1. Data Loading & Preprocessing
-    data = load_training_data("training_data.csv")
+  # load from local file or download from Hugging Face
+  # data = load_training_data("training_data.csv")
+  # or
+  # data = load_training_data("https://huggingface.co/datasets/Pulast/sentry_training_data/resolve/main/training_data.csv")
     X, y = preprocess_features(data)
 
     # 2. Feature Engineering

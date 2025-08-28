@@ -38,69 +38,179 @@
 
 ### Demo Video Link
 
-- [YouTube link — public or unlisted]
+- [Demo Video - Sentinel QoS Network Traffic Classification](https://www.youtube.com/watch?v=YOUR_VIDEO_ID) _(To be updated)_
+
+---
+
+## System Overview
+
+**Sentinel-QoS** is an advanced network traffic classification system that combines machine learning and large language models to provide real-time quality of service monitoring and intelligent traffic analysis in multi-user environments.
+
+### Key Features
+
+- 🎯 **Hybrid AI Classification**: LightGBM (Sentry) + LLM (Vanguard) fallback system
+- 📊 **Real-time Monitoring**: Live traffic analysis with interactive dashboard
+- 🔍 **Intelligent Investigation**: AI-powered root cause analysis and suggestions
+- 🎮 **Interactive Simulation**: What-if scenarios for network planning
+- 🛡️ **Enterprise Ready**: Docker deployment with health monitoring
+- 🌐 **Modern UI**: Responsive Next.js dashboard with dark/light themes
 
 ---
 
 ## Project Artefacts
 
-- **Technical Documentation** - `docs/` (All technical details must live inside the `docs` folder in markdown files.)
-- **Source Code** - `src/` (All source code required to run the project should be present in the `src` folder. This repository also contains a `backend/` and `sentinel-qos-dashboard/` frontend.)
-- **Models Used** - https://huggingface.co/Pulast/sentry-qos-sentry-model
-- **Models Published** - https://huggingface.co/Pulast/sentry-qos-sentry-model
-- **Datasets Used** - [Links to any datasets used; ensure license compatibility]
-- **Datasets Published** - [Links to any datasets you publish to Hugging Face]
+- **Technical Documentation** - [`docs/`](docs/) - Comprehensive technical documentation including system architecture, API documentation, and deployment guides
+- **Source Code** - [`src/`](src/) - Complete source code with organized backend and frontend components
+  - **Backend API** - [`src/backend/`](src/backend/) - FastAPI server with ML model integration
+  - **Frontend Dashboard** - [`src/frontend/`](src/frontend/) - Next.js React application with real-time monitoring
+- **Machine Learning Models** - [Hugging Face Model Repository](https://huggingface.co/Pulast/sentry-qos-sentry-model)
+- **Published Models** - [Sentry Model on Hugging Face](https://huggingface.co/Pulast/sentry-qos-sentry-model)
+- **Training Data** - [`training_data.csv`](training_data.csv) - Synthetic network traffic dataset for model training
+- **Training Data** - [Pulast/sentry_training_data](https://huggingface.co/datasets/Pulast/sentry_training_data) - Synthetic network traffic dataset (published on Hugging Face)
+- **Model Artifacts** - [`models/`](models/) - Trained model files and publishing scripts
+- **Deployment Configuration** - Docker Compose files, Vercel configuration, and CI/CD workflows
 
 ---
 
 ## Quick start (local)
 
-Backend (FastAPI):
+### Prerequisites
 
-1. Create and activate a Python virtual environment
+- Python 3.8+
+- Node.js 18+
+- pnpm (recommended) or npm
+
+### Backend (FastAPI)
+
+1. Navigate to backend directory and set up environment:
 
 ```bash
+cd src/backend
 python3 -m venv .venv
-source .venv/bin/activate
-pip install -r backend/requirements.txt
-python -m uvicorn backend.orchestrator:app --reload --port 8000
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+pip install -r requirements.txt
 ```
 
-1. Start the Python backend
+2. Start the FastAPI backend:
 
 ```bash
-# Create a virtual env and activate it
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt  # ensure fastapi, uvicorn, etc.
 python -m uvicorn orchestrator:app --reload --port 8000
 ```
 
-2. Start the frontend
+### Frontend (Next.js)
+
+1. Navigate to frontend directory and install dependencies:
 
 ```bash
-cd sentinel-qos-dashboard
-pnpm install
-pnpm dev
-# or npm/yarn equivalent
+cd src/frontend
+pnpm install  # or npm install
 ```
 
-3. Open http://localhost:3000
+2. Start the development server:
 
-Environment variables
+```bash
+pnpm dev  # or npm run dev
+```
 
-- `NEXT_PUBLIC_API_URL` (optional) — override backend URL (defaults to http://localhost:8000)
+3. Open http://localhost:3000 in your browser
+
+### Docker Deployment (Recommended)
+
+For easy deployment, use Docker Compose:
+
+```bash
+# Development
+docker-compose -f docker-compose.dev.yml up --build
+
+# Production
+docker-compose up --build
+```
+
+### Environment Configuration
+
+Create a `.env` file in the root directory based on `.env.example`:
+
+```bash
+cp .env.example .env
+# Edit .env with your configuration
+```
+
+Key environment variables:
+
+- `NEXT_PUBLIC_API_URL` — Backend API URL (default: http://localhost:8000)
+- `ADMIN_USERNAME` — Admin dashboard username
+- `ADMIN_PASSWORD` — Admin dashboard password
+- `LLM_MODEL` — Ollama model for LLM classification
+- `LLM_BASE_URL` — Ollama server URL
+
+### Downloading the dataset programmatically
+
+You can load the published dataset directly from Hugging Face in a few ways.
+
+Using the Hugging Face `datasets` library (recommended):
+
+```python
+from datasets import load_dataset
+
+# load the dataset as a DatasetDict and convert to pandas
+ds = load_dataset("Pulast/sentry_training_data")
+df = ds["train"].to_pandas()
+```
+
+Or download the raw CSV (useful for scripts):
+
+```python
+import requests
+
+url = "https://huggingface.co/datasets/Pulast/sentry_training_data/resolve/main/training_data.csv"
+resp = requests.get(url)
+resp.raise_for_status()
+open("training_data.csv", "wb").write(resp.content)
+```
+
+## Architecture & Technology Stack
+
+### Backend
+
+- **FastAPI** - High-performance async API framework
+- **LightGBM** - Primary traffic classification model (Sentry)
+- **Ollama + Gemma** - LLM fallback system (Vanguard) for complex cases
+- **Scikit-learn** - Data preprocessing and model pipeline
+- **Pandas** - Data manipulation and analysis
+
+### Frontend
+
+- **Next.js 14** - React framework with app router
+- **TypeScript** - Type-safe development
+- **Tailwind CSS** - Modern utility-first styling
+- **Shadcn/ui** - Beautiful and accessible UI components
+- **Chart.js** - Interactive data visualization
+
+### Deployment
+
+- **Docker & Docker Compose** - Containerized deployment
+- **Vercel** - Frontend hosting with CI/CD
+- **GitHub Actions** - Automated testing and deployment
 
 Contributing
-Please read `CONTRIBUTING.md` for contribution guidelines and `CODE_OF_CONDUCT.md` for community expectations.
+
+Please read [`CONTRIBUTING.md`](CONTRIBUTING.md) for contribution guidelines and [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) for community expectations.
+
+---
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
 ## Submission Notes
 
-- [Any additional notes for the reviewers, if necessary]
+This project demonstrates a novel hybrid AI approach to network traffic classification, combining the speed and efficiency of traditional ML models with the reasoning capabilities of large language models. The system is designed for real-world deployment with comprehensive monitoring, intuitive UI/UX, and ethical AI considerations including model transparency and fair resource allocation.
 
 ## Contact
 
 - **Team Palt**
-- [Email addresses or other contact information for team members]
+- **Team Leader**: Pulast S Tiwari
+- **Members**: Sarthak Vats, Yash Kumar
+- **Repository**: [github.com/PulastTiwari/sample-template-samsung-ennovatex](https://github.com/PulastTiwari/sample-template-samsung-ennovatex)

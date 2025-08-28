@@ -56,7 +56,37 @@ if missing:
     sys.exit(2)
 
 
+def _download_if_url(path_or_url: str) -> str:
+    """If path_or_url is an HTTP(S) URL, download and cache it locally and return the local path."""
+    if path_or_url.startswith("http://") or path_or_url.startswith("https://"):
+        cache_dir = os.path.join(".cache", "datasets")
+        os.makedirs(cache_dir, exist_ok=True)
+        fname = os.path.basename(path_or_url)
+        local_path = os.path.join(cache_dir, fname)
+        if not os.path.exists(local_path):
+            try:
+                import requests
+                resp = requests.get(path_or_url)
+                resp.raise_for_status()
+                with open(local_path, "wb") as f:
+                    f.write(resp.content)
+                print(f"Downloaded dataset to {local_path}")
+            except Exception as e:
+                print(f"ERROR: failed to download {path_or_url}: {e}")
+                raise
+        else:
+            print(f"Using cached dataset: {local_path}")
+        return local_path
+    return path_or_url
+
+
 def train_sentry_model(csv_path: str = 'training_data.csv', out_path: str = 'sentry_model.pkl', do_plot: bool = False):
+    # support passing a Hugging Face or HTTP URL for the CSV
+    try:
+        csv_path = _download_if_url(csv_path)
+    except Exception:
+        return
+
     if not os.path.exists(csv_path):
         print(f"ERROR: CSV file not found: {csv_path}")
         return

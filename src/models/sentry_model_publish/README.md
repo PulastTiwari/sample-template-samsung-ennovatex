@@ -63,7 +63,7 @@ print("Predicted app type:", label)
 Training & provenance
 
 - Training script: `train_sentry.py` in repo root. It uses LightGBM and saves a joblib payload (`sentry_model.pkl`) containing the model, label encoder, and feature column list.
-- Data: `training_data.csv` (project root) is the canonical CSV used by the trainer.
+- Data: `training_data.csv` (project root) is the canonical CSV used by the trainer. The dataset is also published on Hugging Face: https://huggingface.co/datasets/Pulast/sentry_training_data
 - Recommended minimum data and evaluation: the project README suggests larger datasets (50k+ samples) for robust results; run `python train_sentry.py --csv training_data.csv --out sentry_model.pkl --plot` to reproduce.
 
 Evaluation
