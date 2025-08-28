@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile.dev
+    container_name: sentinel_backend_dev
+    volumes:
+      - ./:/app:rw
+      - ./data/archive:/app/data/archive:ro
+      - /app/.venv
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: ["uvicorn", "backend.orchestrator:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile.dev
+    container_name: sentinel_frontend_dev
+    volumes:
+      - ./frontend:/app:rw
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      - HOST=0.0.0.0
+    depends_on:
+      - backend
+
+networks:
+  default:
+    name: sentinel_dev_net

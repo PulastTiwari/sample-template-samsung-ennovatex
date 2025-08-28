@@ -1,0 +1,165 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* Nonstandard at-rules (tooling-specific) were removed to avoid unknown-at-rule
+  diagnostics in editors that don't parse PostCSS/Tailwind plugins. The
+  variable mappings required for the theme are preserved below in :root so
+  the runtime CSS still has the same custom properties available. */
+
+:root {
+  /* Updated color tokens to match AI network monitoring design brief */
+  --background: oklch(0.145 0.02 264); /* Dark tech background #1f2937 */
+  --foreground: oklch(0.985 0 0); /* White text */
+  --card: oklch(0.96 0.005 240); /* Light card background #f1f5f9 */
+  --card-foreground: oklch(0.145 0.02 264); /* Dark text on cards */
+  --popover: oklch(0.985 0 0); /* White popover background */
+  --popover-foreground: oklch(0.145 0.02 264); /* Dark text on popovers */
+  --primary: oklch(0.65 0.15 280); /* Purple accent #8b5cf6 */
+  --primary-foreground: oklch(0.985 0 0); /* White text on primary */
+  --secondary: oklch(0.45 0.02 240); /* Gray secondary #6b7280 */
+  --secondary-foreground: oklch(0.985 0 0); /* White text on secondary */
+  --muted: oklch(0.25 0.02 240); /* Muted background #374151 */
+  --muted-foreground: oklch(0.985 0 0); /* White text on muted */
+  --accent: oklch(0.65 0.15 280); /* Purple accent #8b5cf6 */
+  --accent-foreground: oklch(0.985 0 0); /* White text on accent */
+  --destructive: oklch(0.62 0.22 25); /* Red for errors #ef4444 */
+  --destructive-foreground: oklch(0.985 0 0); /* White text on destructive */
+  --border: oklch(0.45 0.02 240); /* Gray borders #6b7280 */
+  --input: oklch(0.96 0.005 240); /* Light input background #f1f5f9 */
+  --ring: oklch(0.65 0.15 280 / 0.5); /* Purple focus ring with opacity */
+  --chart-1: oklch(0.62 0.25 264); /* Blue for charts #6366f1 */
+  --chart-2: oklch(0.68 0.22 142); /* Green for charts #4ade80 */
+  --chart-3: oklch(0.84 0.15 85); /* Yellow for charts #facc15 */
+  --chart-4: oklch(0.68 0.22 35); /* Orange for charts #f97316 */
+  --chart-5: oklch(0.62 0.22 25); /* Red for charts #ef4444 */
+  --radius: 0.5rem;
+  --sidebar: oklch(0.25 0.02 240); /* Dark sidebar #374151 */
+  --sidebar-foreground: oklch(0.985 0 0); /* White sidebar text */
+  --sidebar-primary: oklch(0.145 0.02 264); /* Primary sidebar color */
+  --sidebar-primary-foreground: oklch(0.985 0 0); /* White text */
+  --sidebar-accent: oklch(0.65 0.15 280); /* Purple sidebar accent */
+  --sidebar-accent-foreground: oklch(0.985 0 0); /* White accent text */
+  --sidebar-border: oklch(0.45 0.02 240); /* Gray sidebar borders */
+  --sidebar-ring: oklch(0.65 0.15 280 / 0.5); /* Purple sidebar focus ring */
+}
+
+
+/* Dark mode token fallback: keep a `.dark` class mapping so the variables can
+  be toggled at runtime. This preserves the same variable names that the
+  original @custom-variant/@theme intended to expose. */
+.dark {
+  --background: oklch(0.08 0.02 264);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.12 0.02 264);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.12 0.02 264);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.7 0.18 280);
+  --primary-foreground: oklch(0.08 0.02 264);
+  --secondary: oklch(0.18 0.02 240);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.18 0.02 240);
+  --muted-foreground: oklch(0.7 0.02 240);
+  --accent: oklch(0.7 0.18 280);
+  --accent-foreground: oklch(0.08 0.02 264);
+  --destructive: oklch(0.55 0.25 25);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: oklch(0.18 0.02 240);
+  --input: oklch(0.18 0.02 240);
+  --ring: oklch(0.7 0.18 280 / 0.5);
+  --chart-1: oklch(0.65 0.28 264);
+  --chart-2: oklch(0.72 0.25 142);
+  --chart-3: oklch(0.88 0.18 85);
+  --chart-4: oklch(0.72 0.25 35);
+  --chart-5: oklch(0.65 0.25 25);
+  --sidebar: oklch(0.12 0.02 264);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.7 0.18 280);
+  --sidebar-primary-foreground: oklch(0.08 0.02 264);
+  --sidebar-accent: oklch(0.18 0.02 240);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(0.18 0.02 240);
+  --sidebar-ring: oklch(0.7 0.18 280 / 0.5);
+}
+
+/* Map theme variables (these were previously inside a tooling-specific
+  @theme block). Keeping them as custom properties provides the same
+  variables for runtime CSS and makes the file valid CSS. */
+:root {
+  --font-sans: "Open Sans", var(--font-open-sans);
+  --font-serif: "Playfair Display", var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    /* Fallback approximations for utility directives used by Tailwind.
+       These properties use the CSS custom properties defined above so the
+       visual tokens remain consistent even when editors don't understand
+       Tailwind's @apply. */
+    box-sizing: border-box;
+    /* set a sensible default border color for elements that use borders */
+    border-color: var(--color-border);
+    /* lightweight focus ring fallback */
+    outline: 2px solid transparent;
+    outline-offset: 0;
+  }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+  }
+  /* Landing page override: use the serif display font for the landing page only */
+  .landing-font {
+    font-family: var(--font-serif) !important;
+  }
+  /* Added custom typography classes for AI dashboard */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-serif);
+    font-weight: 700;
+  }
+  .font-display {
+    font-family: var(--font-serif);
+  }
+}

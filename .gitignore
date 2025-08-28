@@ -1,0 +1,69 @@
+# Node / Next.js
+node_modules/
+.next/
+dist/
+build/
+.env
+.env.local
+.env.*.local
+.npm/
+pnpm-lock.yaml
+package-lock.json
+.yarn/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.venv/
+venv/
+.env*
+*.egg-info/
+*.eggs/
+*.sqlite3
+*.db
+*.db-journal
+
+# Logs
+*.log
+backend.log
+frontend.log
+*.pkl
+training_data.csv
+.DS_Store
+.cursor/
+node_modules/
+**/node_modules/
+package-lock.json
+**/package-lock.json
+frontend/.next/
+.env
+frontend.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.sublime-workspace
+
+# Data / artifacts
+*.pkl
+*.joblib
+*.png
+*.jpg
+*.jpeg
+*.svg
+
+# Submodules/embedded repos should be tracked as submodules or ignored
+samsung-ennovatex-01/
+
+# Ignore build artifacts produced by shadcn / registry
+components.json
+
+# Allow list
+!docs/
+.vercel

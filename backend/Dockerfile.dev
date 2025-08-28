@@ -1,0 +1,25 @@
+# Backend dev Dockerfile - lightweight, mounts source for hot-reload
+FROM python:3.11-slim
+
+WORKDIR /app
+ENV PYTHONUNBUFFERED=1
+
+# Install minimum system deps for typical Python packages
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends build-essential curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install pip dependencies (cached layer)
+COPY backend/requirements.txt /app/requirements.txt
+RUN python -m pip install --upgrade pip setuptools wheel
+RUN pip install --no-cache-dir -r /app/requirements.txt
+
+# Use a user to avoid running as root in container
+RUN useradd -m devuser || true
+USER devuser
+
+# Mount the repo's backend/ directory into /app/backend when running via compose
+WORKDIR /app
+
+# Development entry - use uvicorn --reload to watch for file changes
+CMD ["uvicorn", "backend.orchestrator:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

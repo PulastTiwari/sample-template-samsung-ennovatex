@@ -1,0 +1,22 @@
+# Frontend dev Dockerfile - Next.js with pnpm for hot-reload
+FROM node:20-alpine
+WORKDIR /app
+
+# Ensure pnpm is available
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
+# Install deps (cache layer)
+COPY frontend/package.json frontend/pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile || pnpm install
+
+# Create a non-root user for safety
+RUN addgroup -S dev && adduser -S dev -G dev || true
+USER dev
+
+# Mount ./frontend -> /app in compose for live edits
+WORKDIR /app
+EXPOSE 3000
+
+# Let Next.js listen on all interfaces (HOST env) and use pnpm dev
+ENV HOST=0.0.0.0
+CMD ["pnpm", "dev"]

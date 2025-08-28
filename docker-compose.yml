@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: sentinel_backend
+    ports:
+      - "8000:8000"
+    environment:
+      - SENTINEL_ADMIN_USER=admin
+      - SENTINEL_ADMIN_PASS=admin
+    volumes:
+      - ./data/archive:/app/data/archive:ro
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    container_name: sentinel_frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - backend
+
+networks:
+  default:
+    name: sentinel_net
