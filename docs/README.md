@@ -28,7 +28,33 @@ Sentinel-QoS is an intelligent network traffic classification system that levera
 
 **Key Innovation**: Hybrid AI architecture combining fast LightGBM classification with intelligent LLM fallback for ambiguous cases, providing both speed and interpretability.
 
----
+## Salient Features
+
+- Real-time, low-latency traffic classification using a lightweight LightGBM model (Sentry).
+- Confidence-based LLM fallback (Vanguard) providing human-readable explanations only for ambiguous flows.
+- Modular API-first backend (FastAPI) with WebSocket support for live dashboards.
+- Production-ready Docker configurations and clear model artifact management.
+- Extensible feature-engineering pipeline and model versioning for continuous improvement.
+
+## Technical Stack & OSS Links
+
+Core libraries and projects used (with rationale and links):
+
+- FastAPI — high-performance Python web framework for APIs (https://fastapi.tiangolo.com/)
+- Uvicorn — ASGI server used to run the FastAPI app (https://www.uvicorn.org/)
+- LightGBM — fast, memory-efficient gradient boosting framework for the Sentry model (https://github.com/microsoft/LightGBM)
+- scikit-learn — utilities for preprocessing, metrics and model evaluation (https://scikit-learn.org/)
+- pandas / numpy — data handling and numerical operations (https://pandas.pydata.org/, https://numpy.org/)
+- joblib — model serialization for artifacts like `sentry_model.pkl` (https://joblib.readthedocs.io/)
+- Next.js — React framework used by the frontend (https://nextjs.org/)
+- Tailwind CSS — utility-first CSS framework for the dashboard (https://tailwindcss.com/)
+- Ollama / Gemma client (local LLM integration) — LLM runtime used for Vanguard fallback (project-specific client docs)
+- Hugging Face Hub — model storage and sharing (https://huggingface.co/)
+- Docker & Docker Compose — containerization and local orchestration (https://www.docker.com/)
+
+Notes:
+- Where possible we use stable OSS libraries with permissive licenses. See `LICENSE` at repository root for the project license.
+
 
 ## Problem Statement & Solution Approach
 
@@ -683,6 +709,86 @@ Hybrid System:
 - Combined Throughput: 2,400 classifications/second
 - 99th Percentile Latency: <200ms
 ```
+
+### Installation (Quickstart)
+
+Follow these steps to run Sentinel-QoS locally. Adjust paths if you moved files into `src/`.
+
+1) Backend (venv)
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r src/backend/requirements.txt
+uvicorn backend.orchestrator:app --reload --host 0.0.0.0 --port 8000
+```
+
+2) Frontend (dev)
+
+```bash
+cd src/frontend
+# uses pnpm - if not installed: npm install -g pnpm
+pnpm install
+pnpm dev
+```
+
+3) Docker (quick start)
+
+```bash
+# from repo root
+docker-compose up --build
+```
+
+Notes:
+- If model artifacts are missing, ensure `src/data/archive/sentry_model.pkl` and `label_encoder.pkl` exist.
+- Set `NEXT_PUBLIC_API_URL` to the backend host when running frontend in production.
+
+### User Guide (Quick Actions)
+
+1) Web UI
+- Open `http://localhost:3000` to access the dashboard.
+- Dashboard shows live throughput, model health, and recent classifications.
+- Use the `Classify` view to submit a single flow and view the prediction + explanation.
+
+2) API (cURL examples)
+- Single flow classification:
+
+```bash
+curl -X POST http://localhost:8000/classify \
+  -H "Content-Type: application/json" \
+  -d '{"packet_count_forward": 120, "packet_count_backward": 85, "total_bytes_forward": 157000, "total_bytes_backward": 12400, "flow_duration": 45.2}'
+```
+
+- Batch classification:
+
+```bash
+curl -X POST http://localhost:8000/classify/batch \
+  -H "Content-Type: application/json" \
+  -d '{"flows": [{/* flow1 */}, {/* flow2 */}]}'
+```
+
+3) WebSocket (quick example)
+
+```python
+import asyncio
+import websockets, json
+
+async def run():
+    uri = "ws://localhost:8000/ws/live-classification"
+    async with websockets.connect(uri) as ws:
+        await ws.send(json.dumps({/* flow payload */}))
+        print(await ws.recv())
+
+asyncio.run(run())
+```
+
+### OSS Links & Credits
+
+- FastAPI: https://fastapi.tiangolo.com/
+- LightGBM: https://github.com/microsoft/LightGBM
+- scikit-learn: https://scikit-learn.org/
+- Next.js: https://nextjs.org/
+- Hugging Face Hub: https://huggingface.co/
 
 ### Confusion Matrix Analysis
 
