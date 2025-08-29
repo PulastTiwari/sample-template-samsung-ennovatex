@@ -91,6 +91,43 @@ function Dock({
   const heightRow = useTransform(isHovered, [0, 1], [panelHeight, maxHeight]);
   const height = useSpring(heightRow, spring);
 
+  const lastPointerType = useRef<string | null>(null);
+  const leaveTimeout = useRef<number | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (leaveTimeout.current) {
+        window.clearTimeout(leaveTimeout.current);
+        leaveTimeout.current = null;
+      }
+    };
+  }, []);
+
+  const handlePointerMove = (e: React.PointerEvent) => {
+    lastPointerType.current = e.pointerType;
+    isHovered.set(1);
+    mouseX.set(e.clientX);
+    if (leaveTimeout.current) {
+      window.clearTimeout(leaveTimeout.current);
+      leaveTimeout.current = null;
+    }
+  };
+
+  const handlePointerLeave = (e: React.PointerEvent) => {
+    lastPointerType.current = e.pointerType;
+    // On touch devices, debounce collapse so a tap/click doesn't immediately close it.
+    if (e.pointerType === "touch") {
+      leaveTimeout.current = window.setTimeout(() => {
+        isHovered.set(0);
+        mouseX.set(Infinity);
+        leaveTimeout.current = null;
+      }, 700);
+    } else {
+      isHovered.set(0);
+      mouseX.set(Infinity);
+    }
+  };
+
   return (
     <motion.div
       style={{
@@ -100,15 +137,30 @@ function Dock({
       className="mx-2 flex max-w-full items-end overflow-x-auto"
     >
       <motion.div
-        onMouseMove={({ pageX }) => {
+        onPointerMove={handlePointerMove}
+        onPointerLeave={handlePointerLeave}
+        onPointerDown={(e: React.PointerEvent) => {
+          // ensure immediate expansion on pointer down (helpful for touch)
+          lastPointerType.current = e.pointerType;
           isHovered.set(1);
-          mouseX.set(pageX);
+          mouseX.set((e as any).clientX ?? Infinity);
+          if (leaveTimeout.current) {
+            window.clearTimeout(leaveTimeout.current);
+            leaveTimeout.current = null;
+          }
         }}
-        onMouseLeave={() => {
-          isHovered.set(0);
-          mouseX.set(Infinity);
+        onPointerUp={(e: React.PointerEvent) => {
+          // keep expanded briefly after pointer up on touch
+          if ((e as any).pointerType === "touch") {
+            if (leaveTimeout.current) window.clearTimeout(leaveTimeout.current);
+            leaveTimeout.current = window.setTimeout(() => {
+              isHovered.set(0);
+              mouseX.set(Infinity);
+              leaveTimeout.current = null;
+            }, 800);
+          }
         }}
-        className={cn(
+  className={cn(
           // glass / frosted effect: translucent background + backdrop blur + subtle border
           "mx-auto flex w-fit gap-4 rounded-2xl px-4 bg-white/30 dark:bg-neutral-900/30 backdrop-blur-md border border-white/20 dark:border-neutral-800/30 shadow-lg",
           className
@@ -149,8 +201,8 @@ function DockItem({ children, className }: DockItemProps) {
     <motion.div
       ref={ref}
       style={{ width }}
-      onHoverStart={() => isHovered.set(1)}
-      onHoverEnd={() => isHovered.set(0)}
+      onPointerEnter={() => isHovered.set(1)}
+      onPointerLeave={() => isHovered.set(0)}
       onFocus={() => isHovered.set(1)}
       onBlur={() => isHovered.set(0)}
       className={cn(
