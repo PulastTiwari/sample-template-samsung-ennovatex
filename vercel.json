@@ -1,17 +1,7 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "src/frontend/package.json",
-      "use": "@vercel/next"
-    }
-  ],
-  "routes": [
-    { "src": "/api/(.*)", "dest": "/api/$1" }
-  ],
-  "installCommand": "pnpm --prefix src/frontend install",
-  "buildCommand": "pnpm --prefix src/frontend build",
-  "env": {
-    "NEXT_PUBLIC_API_URL": "https://your-backend.example.com"
-  }
+  "installCommand": "cd src/frontend && pnpm install",
+  "buildCommand": "cd src/frontend && pnpm build",
+  "framework": "nextjs",
+  "outputDirectory": "src/frontend/.next"
 }
