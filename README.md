@@ -46,16 +46,27 @@
 
 **Sentinel-QoS** is an advanced network traffic classification system that combines machine learning and large language models to provide real-time quality of service monitoring and intelligent traffic analysis in multi-user environments.
 
+
 ### Key Features
 
-- 🎯 **Hybrid AI Classification**: LightGBM (Sentry) + LLM (Vanguard) fallback system
-- 📊 **Real-time Monitoring**: Live traffic analysis with interactive dashboard
-- 🔍 **Intelligent Investigation**: AI-powered root cause analysis and suggestions
-- 🎮 **Interactive Simulation**: What-if scenarios for network planning
-- 🛡️ **Enterprise Ready**: Docker deployment with health monitoring
-- 🌐 **Modern UI**: Responsive Next.js dashboard with dark/light themes
+-Hybrid AI engine: Low‑latency LightGBM classifier handles most traffic; ambiguous cases are escalated to an LLM for richer contextual classification and human‑readable explanations.
 
----
+-Live observability: Real‑time charts, per‑flow metrics, and alerting with playback for recent events.
+
+-Explainable investigations: For each incident, receive a concise summary, confidence score, and recommended policy changes or QoS adjustments.
+
+-Scenario modeling: Simulate traffic shifts, policy changes, or failure modes to predict downstream effects on SLA and throughput.
+
+-Production ready: Containerized services, docker‑compose examples, health endpoints, and logging integrations for easy ops onboarding.
+
+-Developer friendly: TypeScript/Next.js frontend, FastAPI backend, optional Hugging Face model integration, and dataset publishing scripts.
+
+<img width="696" height="776" alt="Screenshot 2025-08-29 at 5 29 41 PM" src="https://github.com/user-attachments/assets/43461122-ca7d-4873-97c0-c29dbbd4afe2" />
+<img width="696" height="776" alt="Screenshot 2025-08-29 at 5 29 02 PM" src="https://github.com/user-attachments/assets/437254f8-b72f-4757-a47e-dc96b984c68e" />
+<img width="696" height="776" alt="Screenshot 2025-08-29 at 5 29 10 PM" src="https://github.com/user-attachments/assets/f821923f-025f-4aca-85e9-175cec4f6a11" />
+<img width="696" height="776" alt="Screenshot 2025-08-29 at 5 29 24 PM" src="https://github.com/user-attachments/assets/6b92a6e3-d6c8-477c-9535-b1588ddeaa00" />
+<img width="696" height="776" alt="Screenshot 2025-08-29 at 5 29 30 PM" src="https://github.com/user-attachments/assets/b1d1d9c0-98c4-45e5-a453-0016c826e934" />
+<img width="1336" height="776" alt="Screenshot 2025-08-29 at 5 17 53 PM" src="https://github.com/user-attachments/assets/e55a7c70-43f5-44c2-9e3a-9c4770d4e3a9" />
 
 ## Project Artefacts
 
