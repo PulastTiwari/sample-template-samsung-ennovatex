@@ -20,15 +20,8 @@
       }
     ],
     "paths": {
-      "@/*": ["src/*", "./*"],
-      "@/components/*": ["components/*"],
-      "@/components/ui/*": ["components/ui/*"],
-      "@/lib/*": ["lib/*"],
-      "@/hooks/*": ["hooks/*"],
-      "@/types": ["lib/types"],
-      "@/types/*": ["lib/*"]
+      "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"]
 }
