@@ -38,7 +38,7 @@
 
 ### Demo Video Link
 
-- [Demo Video - Sentinel QoS Network Traffic Classification](https://www.youtube.com/watch?v=YOUR_VIDEO_ID) _(To be updated)_
+- [Demo Video - Sentinel QoS Network Traffic Classification](https://youtu.be/SV7-sNWkJzs?si=rzXHJz_gqBTLHhuV)
 
 ---
 
