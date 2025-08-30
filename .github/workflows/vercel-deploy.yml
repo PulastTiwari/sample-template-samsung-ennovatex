@@ -27,4 +27,5 @@ jobs:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
         run: |
-          npx vercel@28 deploy --prod --confirm --token $VERCEL_TOKEN --org $VERCEL_ORG_ID --project $VERCEL_PROJECT_ID --cwd src/frontend
+          # Use the tracked src/frontend/.vercel/project.json for project/org info
+          npx vercel@28 deploy --prod --confirm --token $VERCEL_TOKEN --cwd src/frontend
