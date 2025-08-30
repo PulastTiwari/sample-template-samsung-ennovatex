@@ -1,0 +1,30 @@
+name: Deploy to Vercel
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  vercel-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install frontend dependencies (npm)
+        run: |
+          npm --prefix src/frontend install --legacy-peer-deps
+
+      - name: Build frontend
+        run: |
+          npm --prefix src/frontend run build
+
+      - name: Vercel Deploy
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          vercel deploy --prod --confirm --token ${{ secrets.VERCEL_TOKEN }} --cwd src/frontend

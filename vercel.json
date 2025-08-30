@@ -1,4 +1,14 @@
 {
+  "version": 2,
+  "installCommand": "npm --prefix src/frontend install --legacy-peer-deps",
+  "buildCommand": "npm --prefix src/frontend run build",
+  "framework": "nextjs",
+  "builds": [
+    { "src": "src/frontend/package.json", "use": "@vercel/next" }
+  ],
+  "outputDirectory": "src/frontend/.next"
+}
+{
 	"version": 2,
 	"installCommand": "cd src/frontend && npm install --legacy-peer-deps",
 	"buildCommand": "cd src/frontend && npm run build",
