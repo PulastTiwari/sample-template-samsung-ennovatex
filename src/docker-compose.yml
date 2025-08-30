@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  backend:
+    build: ./src/backend
+    container_name: sentinel_backend
+    ports:
+      - "8000:8000"
+    env_file: .env
+    volumes:
+      - ./src/data/archive:/app/data/archive:ro
+
+  frontend:
+    build:
+      context: ./src/frontend
+      dockerfile: Dockerfile
+    container_name: sentinel_frontend
+    ports:
+      - "3001:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://backend:8000
+    depends_on:
+      - backend
+
+networks:
+  default:
+    name: sentinel_net

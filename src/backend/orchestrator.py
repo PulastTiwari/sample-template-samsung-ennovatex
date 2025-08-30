@@ -3,9 +3,8 @@ import random
 import subprocess
 import sys
 import platform
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends, HTTPException, status, UploadFile, File, Form
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
-from fastapi import Depends, HTTPException, status
 import os
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -14,7 +13,6 @@ import json
 import time
 import shlex
 from sentinel_ai_classifier import classify_traffic as hybrid_classify, init_sentry
-from fastapi import UploadFile, File, Form
 
 # Optional dependency for Sentry model loading
 try:
@@ -867,11 +865,12 @@ async def run_simulation(params: SimulationParams):
 
 
 
-@app.get("/status")
-async def status():
+@app.get("/status-lite", include_in_schema=False)
+async def service_status():
     """Lightweight status endpoint used by healthcheck scripts.
 
-    Returns: basic service status including model availability and simple metrics.
+    Returns a small JSON with model availability and simple metrics. Kept as a
+    separate lightweight endpoint from `/status` to avoid route/name collisions.
     """
     model_present = False
     try:
@@ -893,4 +892,4 @@ async def health_check():
     """Compatibility health endpoint used in docs and external scripts.
     Returns 200 when service is up and indicates if model artifacts are present.
     """
-    return await status()
+    return await service_status()
