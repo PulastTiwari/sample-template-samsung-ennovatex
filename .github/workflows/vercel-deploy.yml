@@ -1,9 +1,10 @@
-name: Deploy to Vercel
-
-on:
-  workflow_dispatch:
-  push:
-    branches: [main]
+      - name: Deploy to Vercel
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          # Use the tracked src/frontend/.vercel/project.json for project/org info
+          # Pass the local config to ensure the root directory is src/frontend
+          npx vercel@28 deploy --prod --yes --local-config src/frontend/vercel.json --token $VERCEL_TOKEN --cwd src/frontend
 
 jobs:
   build-and-deploy:
