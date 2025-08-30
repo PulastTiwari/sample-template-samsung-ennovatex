@@ -21,6 +21,19 @@ jobs:
           npm --prefix src/frontend ci --no-audit --no-fund || npm --prefix src/frontend install --legacy-peer-deps
           npm --prefix src/frontend run build
 
+      - name: Debug: show vercel project & env
+        run: |
+          echo "--- project.json ---"
+          cat src/frontend/.vercel/project.json || true
+          echo "--- env vars ---"
+          echo "VERCEL_TOKEN set: ${VERCEL_TOKEN:+yes}"
+          echo "VERCEL_ORG_ID: $VERCEL_ORG_ID"
+          echo "VERCEL_PROJECT_ID: $VERCEL_PROJECT_ID"
+          echo "--- npx & vercel version ---"
+          which npx || true
+          npx --version || true
+          npx vercel@28 --version || true
+
       - name: Deploy to Vercel
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
