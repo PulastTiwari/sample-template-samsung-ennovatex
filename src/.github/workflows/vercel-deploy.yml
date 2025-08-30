@@ -37,4 +37,5 @@ jobs:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
         run: |
-          vercel deploy --prod --confirm --token $VERCEL_TOKEN --yes --cwd src/frontend
+          # Pass the token directly from the repository secret to avoid empty --token argument
+          vercel deploy --prod --confirm --token ${{ secrets.VERCEL_TOKEN }} --cwd src/frontend
